@@ -3,13 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>今日の1枚タロット</title>
+  <title>あたなの次の旅行先勝手に決めちゃいます！</title>
   <style>
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-      background: radial-gradient(circle at top, #283b6f, #050614 60%);
-      color: #fefefe;
+
+      /* ▼▼ 旅っぽい背景（世界地図 × グラデーション） ▼▼ */
+      background: 
+        linear-gradient(to bottom, rgba(245, 232, 210, 0.85), rgba(180, 210, 235, 0.9)),
+        url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_blank_without_borders.svg/2560px-World_map_blank_without_borders.svg.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      /* ▲▲ 旅背景ここまで ▲▲ */
+
+      color: #333;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -19,298 +28,302 @@
     .app {
       width: 100%;
       max-width: 420px;
-      padding: 20px 16px 24px;
+      padding: 16px;
       box-sizing: border-box;
       text-align: center;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 16px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     }
 
     h1 {
       font-size: 24px;
-      margin: 4px 0 6px;
-      letter-spacing: 0.06em;
+      margin: 6px 0 10px;
+      font-weight: 700;
+      color: #2a4a65;
     }
 
     .subtitle {
       font-size: 13px;
-      color: #dcdff5;
+      color: #555;
       line-height: 1.4;
-      margin-bottom: 14px;
-    }
-
-    .card-area {
-      width: 100%;
-      max-width: 260px;
-      margin: 0 auto 12px;
-      aspect-ratio: 3 / 5;
-      border-radius: 20px;
-      overflow: hidden;
-      background: radial-gradient(circle at top, #262f55, #050614);
-      position: relative;
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(255, 255, 255, 0.04);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card-area::before {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      border-radius: 22px;
-      background: radial-gradient(circle at top, rgba(248, 226, 138, 0.5), transparent 60%);
-      opacity: 0.6;
-      pointer-events: none;
-    }
-
-    .card-area img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      z-index: 1;
-      transition: transform 0.15s ease-out;
-    }
-
-    .card-area img:active {
-      transform: scale(0.97);
-    }
-
-    button {
-      padding: 10px 24px;
-      border-radius: 999px;
-      border: none;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(135deg, #f9e28a, #f5c76d);
-      color: #3c310c;
-      margin-bottom: 6px;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, filter 0.1s;
-    }
-
-    button:active {
-      transform: translateY(1px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      filter: brightness(0.98);
-    }
-
-    button:disabled {
-      opacity: 0.45;
-      cursor: default;
-      box-shadow: none;
-    }
-
-    #hint {
-      font-size: 12px;
-      color: #b9bedf;
       margin-bottom: 12px;
     }
 
-    .result {
-      margin-top: 10px;
-      text-align: left;
-      background: rgba(10, 13, 35, 0.92);
-      padding: 14px 14px 12px;
+    /* カード */
+    .card {
+      margin-top: 16px;
+      background: #fff;
       border-radius: 16px;
-      font-size: 14px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
-    .result h2 {
+    /* 写真 */
+    .photo-wrapper {
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      padding-top: 62%;
+      margin-bottom: 10px;
+      background: #ddd;
+    }
+    .photo-wrapper img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* テキスト */
+    .trip-title {
       font-size: 17px;
-      margin: 0 0 4px;
-    }
-
-    .result .keyword {
-      font-size: 12px;
-      color: #f9e28a;
-      margin-bottom: 6px;
-      letter-spacing: 0.04em;
-    }
-
-    .insta-area {
-      margin-top: 12px;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .insta-text {
-      margin-bottom: 6px;
-      color: #dcdff5;
-      font-size: 12px;
-    }
-
-    /* ▼ インスタ用ボタン（aタグだけどボタンっぽく） */
-    .insta-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 18px;
-      border-radius: 999px;
-      font-size: 13px;
       font-weight: 600;
-      text-decoration: none;
-      color: #0b0c1a;
-      background: linear-gradient(135deg, #ffe3a7, #ffb8c9);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+      margin-bottom: 4px;
+      color: #2a4a65;
+    }
+    .trip-place {
+      font-size: 12px;
+      color: #5f85a2;
+      margin-bottom: 8px;
+    }
+    .trip-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+
+    /* ボタン */
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 999px;
       border: none;
       cursor: pointer;
-    }
-
-    .insta-link span.icon {
       font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      transition: 0.15s ease;
     }
-
-    .insta-link:active {
+    .btn-primary {
+      background: #2a4a65;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(42, 74, 101, 0.3);
+    }
+    .btn-primary:active {
       transform: translateY(1px);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+    }
+    .btn-instagram {
+      background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+      color: #fff;
+      width: 100%;
+      text-decoration: none;
+      padding: 12px;
+      display: inline-block;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    .hidden {
-      display: none;
+    .footer-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #666;
     }
   </style>
+  
 </head>
+
 <body>
   <div class="app">
-    <h1>今日の1枚タロット</h1>
-    <p class="subtitle">
-      スタートを押して、シャカシャカ動くカードをタップしてね。<br>
-      止まった1枚が、今日のあなたへのメッセージです。
-    </p>
-
-    <div class="card-area">
-      <img id="card-image" src="./cards/back.png" alt="タロットカード" />
+    <h1>あたなの次の旅行先勝手に決めちゃいます！</h1>
+    <div class="subtitle">
+      タップするとランダムで旅の写真とストーリーが表示されます。
     </div>
 
-    <button id="start-btn">スタート</button>
-    <p id="hint">スタート → カードをタップすると止まります</p>
+    <button id="drawButton" class="btn btn-primary">あなたの次の旅行先を見る</button>
 
-    <div id="result" class="result hidden">
-      <h2 id="card-title"></h2>
-      <div id="card-keyword" class="keyword"></div>
-      <p id="card-text"></p>
-
-      <div class="insta-area">
-        <div class="insta-text">このタロットを描いたイラストレーター</div>
-        <!-- ここをボタンっぽいリンクに変更 -->
-        <a
-          id="insta-link"
-          class="insta-link"
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span class="icon">✦</span>
-          <span>Instagramでイラストを見る</span>
-        </a>
+    <div id="card" class="card visible">
+      <div class="photo-wrapper">
+       <img id="tripImage" src="./pictures/top.jpg" alt="旅の写真" />
       </div>
+      <div class="trip-title" id="tripTitle"></div>
+      <div class="trip-place" id="tripPlace"></div>
+      <div class="trip-desc" id="tripDesc"></div>
+
+      <a id="instaLink" class="btn-instagram" href="#" target="_blank">
+        Instagramを見る
+      </a>
+    </div>
+
+    <div class="footer-note">
+      
     </div>
   </div>
 
   <script>
-    // Instagram ボタン用（参考コードを反映）
+  const trips = [
+  {
+    title: "中国（新疆ウイグル） — XXXXXXX",
+    place: "中国",
+    imageUrl: "./pictures/Y3_Uighur.jpg", 
+    description:
+"【自由なラクダ】\n" +
+"遥かなるタクラマカン砂漠。ここでは、誰にも縛られることなく、ゆったりと砂の上を闊歩するラクダたちの姿を見ることができます。広大な砂丘が描き出す風紋の上を、ただ自由に、時に立ち止まり、静かに遠い山脈を見つめる彼らの姿は、この地の雄大さと静寂の象徴です。天山山脈の雪解け水が育むオアシスで、異国情緒あふれるウイグル文化に触れながら、広いウイグルを旅してみてはいかがでしょう。"
+  },
+  {
+    title: "🇱🇰 スリランカ — 大地と歴史の宝石箱",
+    place: "スリランカ",
+    imageUrl: "./pictures/Y9_SriLanka.jpg", 
+    description:
+"【世界遺産と極上紅茶】\n" +
+"インド洋に浮かぶ小さな島、スリランカは、8つもの世界遺産が点在する「光り輝く島（シンハラ語の意）」。古代の宮殿がそびえるシギリヤ・ロック、聖地キャンディ、そして仏教の歴史を刻むポロンナルワなど、壮大な歴史を感じられます。同時に、標高の高い地域では、世界三大紅茶の一つ「セイロンティー」が栽培され、豊かな大地と香りに満ちています。ビーチ、山岳地帯、遺跡、サファリ...。この島は、様々な魅力をコンパクトに詰め込んだ「大地と歴史の宝石箱」です。"
+  },
+  {
+    title: "🇮🇩 インドネシア（スラウェシ島）— トラジャ民族",
+    place: "インドネシア・スラウェシ島",
+    imageUrl: "./pictures/Y3_Indonesia_toraja.jpg",
+    description:
+"【死生観が織りなす、スラウェシの天空民族】\n" +
+"インドネシア・スラウェシ島奥地に暮らすトラジャ民族。彼らの集落で目を引くのは、船の形をした独特な屋根を持つ伝統家屋「トンコナン」です。彼らの文化の中心にあるのは、死者への畏敬の念と壮大な葬儀。何日間にもわたる儀式は、生と死が密接に結びついたトラジャの深い精神世界を映し出します。静謐な山間部に息づく、独自の建築、信仰、そして厳かな儀式に触れ、他のどこにもない人類学的な興味に満ちた旅を体験してみませんか。"
+  },
+  {
+    title: "🇮🇩 インドネシア（バリ島）— 王宮ダンス",
+    place: "バリ島",
+    imageUrl: "pictures/Y1_bali_dance.HEIC",
+    description:
+"【神々の島で、王宮での舞の夜】\n" +
+"バリ島の夜を彩る、神秘的で豪華絢爛な王宮舞踊。優雅でありながらも力強い手の動き、キラキラと輝く豪華な衣装、そしてガムランの幻想的な調べが、観客を一瞬で古代の王宮へと誘います。単なるパフォーマンスではなく、神々への祈りや物語を伝える生きた文化です。その優美な世界に浸り、バリの精神性に触れる特別な体験を。"
+  },
+  {
+    title: "🇫🇯 フィジー — フィジアンの心",
+    place: "フィジー",
+    imageUrl: "./pictures/Y2_fiji.JPG",
+    description:
+"【「ブラ！」の魔法】\n" +
+"手つかずの自然が残るフィジーは、息をのむほど美しい世界屈指のクリアな海が魅力。ダイビングやシュノーケリングで、カラフルな魚たちと戯れる至福のひとときを。しかし、フィジーの本当の宝は、温かく陽気なフィジアンたちです。誰もが交わす挨拶「ブラ！（Bula!）」の言葉には、深い愛と歓迎の精神が込められています。彼らの笑顔とホスピタリティに触れ、心からリラックスできる旅です。"
+  },
+  {
+    title: "🇹🇭 タイ（山岳少数民族）— アカ族",
+    place: "タイ北部",
+    imageUrl: "./pictures/Y6_Thailand_aka.JPG",
+    description:
+"【アカ族の文化】\n" +
+"タイ北部の山深く、独自の文化と伝統を守りながら暮らす山岳少数民族アカ族。彼らがまとう繊細な刺繍が施された民族衣装、銀細工の大きな頭飾りは、その暮らしと信仰の深さを物語っています。都会の喧騒から離れ、棚田や茶畑が広がる集落を訪れることで、自然と調和した彼らの素朴で力強い生活文化と、アカ族の持つ誇り高き精神に触れることができます。"
+  },
+  {
+    title: "🇱🇦 ラオス（ルアンパバーン）— 静寂の古都",
+    place: "ラオス・ルアンパバーン",
+    imageUrl: "pictures/Y4_LuangPrabang_kingsPalace.HEIC",
+    description:
+"【時間の流れが止まった古都、祈りと微笑みの街】\n" +
+"メコン川とカーン川に挟まれた世界遺産の街、ルアンパバーン。フランス統治時代の面影を残すレトロな街並みと、金色に輝く寺院が調和した、静寂に包まれた古都です。慌ただしい日常を忘れさせてくれる、ゆったりとした空気感こそが最大の魅力。伝統的な木造家屋のカフェで寛ぎ、ラオスの人々の穏やかな微笑みに癒される、心の洗濯の旅へ。"
+  },
+  {
+    title: "🇱🇦 ラオス（ルアンパバーン）— 朝の托鉢",
+    place: "ラオス・ルアンパバーン",
+    imageUrl: "./pictures/Y5_LuangPrabang_morning.JPG",
+    description:
+"【オレンジ色の光景。古都の朝を彩る厳かな祈り】\n" +
+"ルアンパバーンでしか体験できない、感動的な朝の儀式。夜明け前、オレンジ色の袈裟をまとった数百人の僧侶たちが、静かに一列になって街を歩きます。通りにひざまずいた人々が、僧侶たちに餅米（カオニャオ）を分け与える「托鉢（たくはつ）」。観光のためではなく、厳かな信仰心から行われるこの光景は、古都の精神的な美しさを象徴しています。静かに見つめ、人々の「与える心」を感じてみましょう。"
+  },
+  {
+    title: "南インド— 結婚式",
+    place: "南インド",
+    imageUrl: "./pictures/Y8_india_wedding.JPG",
+    description:
+"【XXXXXXXXXXXXXXXXXXXXX】\n" +
+"XXXXXXXXXXXXXXXXXXXXX"
+  },
+  {
+    title: "🇹🇭 タイ（メークロン鉄道市場）— タラート・ロム・フッブ",
+    place: "タイ・メークロン",
+    imageUrl: "./pictures/Y7_hailand_maeklong.jpg",
+    description:
+"【列車が通るたび、一瞬で消える幻の市場！】\n" +
+"線路の真上で商売が行われる、世界でも類を見ないスリル満点の市場、メークロン鉄道市場（タラート・ロム・フッブ）。列車が近づくと、市場の人々が一斉に商品やひさしを素早く引っ込める様子は、まさに職人技！列車が通り過ぎた数秒後には、何事もなかったかのように市場が再開します。タイの庶民のたくましさと、ユーモアが凝縮された、活気あふれる驚きのスポットを体感あれ。"
+  },
+  {
+    title: "🇹🇼 台湾（九份）",
+    place: "台湾・九份",
+    imageUrl: "./pictures/P3_jiufen.jpg",
+    description:
+"千と千尋の舞台ともなった場所。何回訪れても雰囲気があります。タロ芋が大好きですが、臭豆腐にはチャレンジできず。"
+  },
+  {
+    title: "🇮🇩 インドネシア（スラヴェシ）— カカオ農園",
+    place: "インドネシア・スラウェシ島",
+    imageUrl: "./pictures/P2_Indonesia_cacao.jpg.jpg",
+    description:
+"アグリフォレストをしているカカオ農園です。カカオ流通量として少ないのですが、酸味のある美味しいカカオ豆です！チョコって実は発酵食品なんです！"
+  },
+  {
+    title: "🇱🇦 ラオス（ヴィエンチャン）— 1000人規模の結婚式",
+    place: "ラオス・ヴィエンチャン",
+    imageUrl: "./pictures/P4_laos_wedding.jpg",
+    description:
+"ラオス人の友人の結婚式です。1000人規模で、友人の友人の友人まで来ていました。生演奏やダンサー、親戚によるダンスバトルなど、日本では見慣れない文化に触れました！早朝からその日の24時を超えるまでの、長丁場の結婚式でした。"
+  },
+  {
+    title: "🇰🇭 カンボジア（ストゥントレン）",
+    place: "カンボジア・ストゥントレン",
+    imageUrl: "./pictures/P1_cambodia.jpg",
+    description:
+"シェムリアップにあるアンコールワット遺跡群の圧倒的な存在感はもちろん、村の子供たちとの触れ合いや、魅力的なビジネスをしている人たちなど、素敵な出会いが沢山あります。"
+  }
+];
+
+
+
     const instagramUrl = "https://www.instagram.com/yuzupon_to_pokoto/";
-    const instaLink = document.getElementById("insta-link");
+
+    const drawButton = document.getElementById("drawButton");
+    const card = document.getElementById("card");
+    const tripImage = document.getElementById("tripImage");
+    const tripTitle = document.getElementById("tripTitle");
+    const tripPlace = document.getElementById("tripPlace");
+    const tripDesc = document.getElementById("tripDesc");
+    const instaLink = document.getElementById("instaLink");
+
     instaLink.href = instagramUrl;
 
-    // ★ ここに16枚のカード情報を書く
-    const cards = [
-      {
-        id: "0_TheFool",
-        title: "愚者",
-        keyword: "はじまり・自由・冒険",
-        image: "./cards/0_TheFool.png",
-        text: "決めすぎないで、心がときめく方向に一歩踏み出してみて。失敗しても大丈夫、そこからまた学べます。"
-      },
-      {
-        id: "1_TheMagician",
-        title: "魔術師",
-        keyword: "チャンス・集中・創造",
-        image: "./cards/1_TheMagician.png",
-        text: "今のあなたは、持っているものを組み合わせて新しいものを生み出せるとき。ピンときたことに集中してみて。"
-      },
-      {
-        id: "2_TheHighPriestess",
-        title: "女教皇",
-        keyword: "直感・静けさ・観察",
-        image: "./cards/2_TheHighPriestess.png",
-        text: "慌てて答えを出さなくて大丈夫。静かな時間をとって、自分の直感の声を聞いてみて。"
-      },
-      {
-        id: "3_TheEmpress",
-        title: "女帝",
-        keyword: "豊かさ・やさしさ・育てる",
-        image: "./cards/3_TheEmpress.png",
-        text: "自分にも人にもやさしくすると、思った以上の豊かさが返ってきそう。好きなものに愛情を注いでみて。"
-      },
-      {
-        id: "4_TheEmperor",
-        title: "皇帝",
-        keyword: "決断・責任・リーダーシップ",
-        image: "./cards/4_TheEmperor.png",
-        text: "今日は「自分で決める」ことがテーマ。小さなことでも、自分の意思で選ぶことを意識してみて。"
-      },
-      {
-        id: "5_TheHierophant",
-        title: "法王",
-        keyword: "学び・伝える・つながり",
-        image: "./cards/5_TheHierophant.png",
-        text: "誰かから学ぶ・誰かに教える、どちらも良い日。安心できる人との対話がヒントをくれそうです。"
-      },
-      // ……この要領で 15 まで追加する……
-    ];
+    function drawRandomTrip() {
+      const index = Math.floor(Math.random() * trips.length);
+      const t = trips[index];
 
-    const cardImage = document.getElementById("card-image");
-    const startBtn = document.getElementById("start-btn");
-    const resultBox = document.getElementById("result");
-    const titleEl = document.getElementById("card-title");
-    const keywordEl = document.getElementById("card-keyword");
-    const textEl = document.getElementById("card-text");
+      tripImage.src = t.imageUrl;
+      tripTitle.textContent = t.title;
+      tripPlace.textContent = t.place;
+      tripDesc.textContent = t.description;
 
-    let timer = null;
-    let currentIndex = 0;
-
-    function startRoulette() {
-      if (cards.length === 0) return;
-
-      resultBox.classList.add("hidden");
-      startBtn.disabled = true;
-      document.getElementById("hint").textContent = "カードをタップすると止まります";
-
-      timer = setInterval(() => {
-        currentIndex = Math.floor(Math.random() * cards.length);
-        cardImage.src = cards[currentIndex].image;
-      }, 70);
+      card.classList.add("visible");
     }
 
-    function stopRoulette() {
-      if (!timer) return;
-
-      clearInterval(timer);
-      timer = null;
-
-      const card = cards[currentIndex];
-      cardImage.src = card.image;
-      titleEl.textContent = card.title;
-      keywordEl.textContent = card.keyword;
-      textEl.textContent = card.text;
-
-      resultBox.classList.remove("hidden");
-      startBtn.disabled = false;
-      startBtn.textContent = "もう一度引く";
-      document.getElementById("hint").textContent = "もう一度引きたいときはボタンを押してね";
-    }
-
-    startBtn.addEventListener("click", startRoulette);
-    cardImage.addEventListener("click", stopRoulette);
+    drawButton.addEventListener("click", drawRandomTrip);
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
