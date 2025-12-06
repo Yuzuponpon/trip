@@ -126,19 +126,22 @@
     .btn-primary:active {
       transform: translateY(1px);
     }
-    .btn-instagram {
-    background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-    color: #fff;
-    text-decoration: none;
-    padding: 12px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 600;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 8px;
-  }
+  .btn-instagram {
+  background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+  color: #fff;
+  text-decoration: none;
+
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+
+  display: block;
+  width: calc(100% - 8px); /* ★ これで右端が少し内側に収まる */
+  box-sizing: border-box;
+
+  margin: 8px auto 0; /* auto にすることで中央に揃う */
+}
 
 
     .footer-note {
@@ -319,6 +322,7 @@
   </script>
 </body>
 </html>
+
 
 
 
