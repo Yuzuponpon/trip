@@ -87,6 +87,7 @@
     }
 
     /* テキスト */
+       /* テキスト */
     .trip-title {
       font-size: 17px;
       font-weight: 600;
@@ -106,60 +107,81 @@
       white-space: pre-wrap;
     }
 
-    /* ボタン */
+    /* ===== ボタン（ここから新しく） ===== */
+
+    /* 共通ボタンベース */
     .btn {
-      display: inline-block;
-      padding: 12px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.03em;
-      transition: 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
-    .btn-primary {
-      background: #2a4a65;
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(42, 74, 101, 0.3);
+
+    /* スタートボタン（金色グラデ） */
+    .btn-start {
+      background: linear-gradient(135deg, #fce7b0, #e5c06f);
+      color: #3a2c00;
+      box-shadow: 0 4px 12px rgba(240, 200, 120, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
-    .btn-primary:active {
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(240, 200, 120, 0.6);
+      filter: brightness(1.03);
+    }
+    .btn-start:active {
       transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(240, 200, 120, 0.35);
     }
-.btn-instagram {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 
-  width: 100%;
-  padding: 14px 20px;
+    /* Instagramボタン（ピンク×オレンジ） */
+    .btn-instagram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
 
-  background: linear-gradient(135deg, #ffe7c3, #ffbad2);
-  border-radius: 999px;
-  color: #3b2b2b;
-  font-weight: 600;
-  font-size: 15px;
-  text-decoration: none;
+      width: 100%;
+      padding: 14px 20px;
 
-  box-shadow: 0 4px 12px rgba(255, 170, 200, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+      background: linear-gradient(135deg, #ffe7c3, #ffbad2);
+      border-radius: 999px;
+      color: #3b2b2b;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
 
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
+      box-shadow: 0 4px 12px rgba(255, 170, 200, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.4);
 
-.btn-instagram:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 170, 200, 0.5);
-}
+      box-sizing: border-box;
+      margin-top: 10px;
 
-.btn-instagram:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 8px rgba(255, 170, 200, 0.3);
-}
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+    .btn-instagram:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 170, 200, 0.5);
+      filter: brightness(1.03);
+    }
+    .btn-instagram:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(255, 170, 200, 0.3);
+    }
 
+    /* ===== ボタンここまで ===== */
 
-
+    .footer-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #666;
+    }
 
 
     .footer-note {
@@ -340,6 +362,7 @@
   </script>
 </body>
 </html>
+
 
 
 
