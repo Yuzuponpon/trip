@@ -127,17 +127,19 @@
       transform: translateY(1px);
     }
     .btn-instagram {
-      background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-      color: #fff;
-      width: 100%;
-      text-decoration: none;
-      padding: 12px;
-      display: inline-block;
-      border-radius: 12px;
-      margin-top: 8px;
-      font-size: 13px;
-      font-weight: 600;
-    }
+    background: linear-gradient(135deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+    color: #fff;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;
+  }
+
 
     .footer-note {
       margin-top: 12px;
@@ -155,7 +157,7 @@
       タップするとランダムで旅の写真とストーリーが表示されます。
     </div>
 
-    <button id="drawButton" class="btn btn-primary">あなたの次の旅行先を見る</button>
+    <button id="drawButton" class=" -primary">あなたの次の旅行先を見る</button>
 
     <div id="card" class="card visible">
       <div class="photo-wrapper">
@@ -165,7 +167,7 @@
       <div class="trip-place" id="tripPlace"></div>
       <div class="trip-desc" id="tripDesc"></div>
 
-      <a id="instaLink" class="btn-instagram" href="#" target="_blank">
+      <a id="instaLink" class="-instagram" href="#" target="_blank">
         Instagramを見る
       </a>
     </div>
@@ -317,6 +319,7 @@
   </script>
 </body>
 </html>
+
 
 
 
